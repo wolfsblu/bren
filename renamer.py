@@ -3,11 +3,9 @@ import re
 from gui import GUI
 
 class Renamer():
-    def __init__(self, files):
+    def __init__(self, files, ui):
+        self.ui = ui
         self.files = files
-        self.ui = GUI(files)
-        self.ui.register_search_listener(self.on_search_change)
-        self.ui.show()
 
     def on_search_change(self, widget, new_text):
         try:
