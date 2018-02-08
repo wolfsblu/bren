@@ -37,8 +37,9 @@ class FilePanel():
 
         return urwid.Columns([matchborder, previewborder])
 
-    def update_files(self, files):
+    def update_files(self, matches):
         del self.filelist[:]
-        textboxes = [urwid.Text(f, wrap='clip') for f in files]
+        # TODO: Only color the search string
+        textboxes = [urwid.Text(('match', m.string), wrap='clip') for m in matches]
         self.filelist.extend(textboxes)
 

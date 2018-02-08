@@ -6,6 +6,10 @@ def exit(key):
     if key in ('esc', 'q'):
         raise urwid.ExitMainLoop()
 
+PALETTE = [
+    ('match', 'dark red', 'black')
+]
+
 class GUI():
     def __init__(self, files):
         self.searchpanel = SearchPanel()
@@ -16,7 +20,7 @@ class GUI():
                             , header=self.searchpanel.get_widget()
                             , footer=self.statusbar.get_widget()
                             , focus_part='header')
-        self.loop = urwid.MainLoop(frame, unhandled_input=exit)
+        self.loop = urwid.MainLoop(frame, PALETTE, unhandled_input=exit)
 
     def set_files(self, file_filter):
         files = list(file_filter)
