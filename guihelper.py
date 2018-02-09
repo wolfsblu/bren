@@ -4,7 +4,6 @@ class SearchPanel():
     def __init__(self):
         self.search = urwid.Edit(caption='Search: ')
         self.replace = urwid.Edit(caption='Replace: ')
-        self.search = urwid.Edit(caption='Search: ')
 
     def get_widget(self):
         cols = urwid.Columns([urwid.LineBox(self.search),

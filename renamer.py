@@ -14,3 +14,6 @@ class Renamer():
             self.matches = [m for f in self.files for m in [regex.finditer(f)] if m]
             self.ui.search(new_text, self.matches)
         except re.error: return
+
+    def on_replace_change(self, widget, new_text):
+        pass

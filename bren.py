@@ -19,6 +19,7 @@ def main():
     renamer = Renamer(files, ui)
 
     ui.register_search_listener(renamer.on_search_change)
+    ui.register_replace_listener(renamer.on_replace_change)
     ui.show()
 
 if __name__ == '__main__':
