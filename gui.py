@@ -7,6 +7,7 @@ def exit(key):
         raise urwid.ExitMainLoop()
 
 PALETTE = [
+    #('default', 'white', 'black'),
     ('match', 'dark red', 'black')
 ]
 
@@ -22,10 +23,10 @@ class GUI():
                             , focus_part='header')
         self.loop = urwid.MainLoop(frame, PALETTE, unhandled_input=exit)
 
-    def set_files(self, file_filter):
+    def set_files(self, searchtext, file_filter):
         files = list(file_filter)
-        self.filepanel.update_files(files)
-        self.statusbar.update_files(files)
+        matches = self.filepanel.search(searchtext, files)
+        self.statusbar.search(matches)
 
     def show(self):
         self.loop.run()

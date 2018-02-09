@@ -19,8 +19,8 @@ class StatusBar():
     def get_widget(self):
         return urwid.Padding(self.count_widget, left=1)
 
-    def update_files(self, files):
-        self.count_widget.set_text("{}/{} files".format(len(files), self.file_count))
+    def search(self, matches):
+        self.count_widget.set_text("{}/{} files".format(matches, self.file_count))
 
 class FilePanel():
     def __init__(self, files):
@@ -37,9 +37,35 @@ class FilePanel():
 
         return urwid.Columns([matchborder, previewborder])
 
-    def update_files(self, matches):
+    def search(self, searchtext, matches):
         del self.filelist[:]
-        # TODO: Only color the search string
-        textboxes = [urwid.Text(('match', m.string), wrap='clip') for m in matches]
+        textboxes = []
+        if len(searchtext) == 0:
+            for m_iter in matches:
+                for m in m_iter:
+                    textboxes.append(urwid.Text(m.string, wrap='clip'))
+                    break
+        else:
+            for m_iter in matches:
+                parts = []
+                string = ''
+                prev_start = prev_end = 0
+                for m in m_iter:
+                    string = m.string
+                    if m.start() > prev_end:
+                        parts.append(m.string[prev_end:m.start()])
+                    prev_end = m.end()
+                    prev_start = m.start()
+                    parts.append(('match', m.group(0)))
+
+                if len(parts) > 0:
+                    if prev_end != len(string) - 1:
+                        parts.append(string[prev_end:])
+
+                    txt = urwid.Text(parts, wrap='clip')
+                    if len(txt.get_text()) > 0:
+                        textboxes.append(txt)
+
         self.filelist.extend(textboxes)
+        return len(self.filelist)
 
