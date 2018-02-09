@@ -59,7 +59,7 @@ class FilePanel():
                     parts.append(('match', m.group(0)))
 
                 if len(parts) > 0:
-                    if prev_end != len(string) - 1:
+                    if prev_end != len(string):
                         parts.append(string[prev_end:])
 
                     txt = urwid.Text(parts, wrap='clip')

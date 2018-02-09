@@ -23,7 +23,7 @@ class GUI():
                             , focus_part='header')
         self.loop = urwid.MainLoop(frame, PALETTE, unhandled_input=exit)
 
-    def set_files(self, searchtext, file_filter):
+    def search(self, searchtext, file_filter):
         files = list(file_filter)
         matches = self.filepanel.search(searchtext, files)
         self.statusbar.search(matches)
