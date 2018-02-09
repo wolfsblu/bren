@@ -21,8 +21,7 @@ class GUI():
                             , ('pack', self.statusbar.get_widget())])
         self.loop = urwid.MainLoop(frame, PALETTE, unhandled_input=exit)
 
-    def search(self, searchtext, file_filter):
-        files = list(file_filter)
+    def search(self, searchtext, files):
         matches = self.filepanel.search(searchtext, files)
         self.statusbar.search(matches)
 

@@ -70,6 +70,30 @@ class FilePanel():
         return len(self.filelist)
 
     def replace(self, replacement, files):
+        # TODO: Colorize replacement part
         del self.previewlist[:]
-        self.previewlist.extend([urwid.Text(f, wrap='clip') for f in files])
+        textboxes = []
+        for file in files:
+            parts = []
+            s = file.find("$MATCH$")
+            e = file.find("$END$")
+            ps = pe = 0
+            while s >= 0:
+                if s > 0:
+                    parts.append(file[pe:s].replace('$MATCH$', '').replace('$END$', ''))
+                parts.append(('match', file[s:e].replace('$MATCH$', '').replace('$END$', '')))
+                ps = s
+                pe = e
+                s = file.find("$MATCH$", s + 1)
+                e = file.find("$END$", e + 1)
+
+            if len(parts) > 0:
+                if pe != len(file):
+                    parts.append(file[pe:].replace('$MATCH$', '').replace('$END$', ''))
+                txt = urwid.Text(parts, wrap='clip')
+                if len(txt.get_text()) > 0:
+                    textboxes.append(txt)
+
+        self.previewlist.extend(textboxes)
+        #self.previewlist.extend([urwid.Text(f, wrap='clip') for f in files])
 

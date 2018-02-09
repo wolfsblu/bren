@@ -17,8 +17,9 @@ class Renamer():
         self.ui.search(search, self.matches)
 
     def on_replace_change(self, widget, replacement):
-        try: re.compile(replacement)
-        except re.error: return
-        # TODO: Allow backreferences
-        self.replaced = [self.searchregex.sub(replacement, f) for f in self.files if self.searchregex.search(f)]
-        self.ui.replace(replacement, self.replaced)
+        try:
+            # TODO: Allow backreferences
+            self.replaceregex = "{}{}{}".format("$MATCH$", bytes(replacement, 'utf-8').decode('unicode_escape'), "$END$")
+            self.replaced = [self.searchregex.sub(self.replaceregex, f) for f in self.files if self.searchregex.search(f)]
+            self.ui.replace(replacement, self.replaced)
+        except (re.error, UnicodeDecodeError): return
