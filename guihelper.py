@@ -25,20 +25,22 @@ class FilePanel():
     def __init__(self, files):
         textboxes = [urwid.Text(f, wrap='clip') for f in files]
         self.filelist = urwid.SimpleFocusListWalker(textboxes)
+        self.previewlist = urwid.SimpleFocusListWalker(textboxes)
 
     def get_widget(self):
         matchlist = urwid.ListBox(self.filelist)
         matchborder = urwid.LineBox(matchlist)
 
-        # TODO: Use preview file name list
-        previewlist = urwid.ListBox(self.filelist)
+        previewlist = urwid.ListBox(self.previewlist)
         previewborder = urwid.LineBox(previewlist)
 
         return urwid.Columns([matchborder, previewborder])
 
     def search(self, searchtext, matches):
-        del self.filelist[:]
         textboxes = []
+        del self.filelist[:]
+        del self.previewlist[:]
+
         if len(searchtext) == 0:
             for m_iter in matches:
                 textboxes.append(urwid.Text(next(m_iter).string, wrap='clip'))
@@ -64,5 +66,10 @@ class FilePanel():
                         textboxes.append(txt)
 
         self.filelist.extend(textboxes)
+        self.previewlist.extend(textboxes)
         return len(self.filelist)
+
+    def replace(self, replacement, files):
+        del self.previewlist[:]
+        self.previewlist.extend([urwid.Text(f, wrap='clip') for f in files])
 

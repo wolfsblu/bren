@@ -6,14 +6,19 @@ class Renamer():
     def __init__(self, files, ui):
         self.ui = ui
         self.files = files
-        self.matches = []
+        self.matches = self.replaced = []
+        self.searchregex = self.replaceregex = None
 
-    def on_search_change(self, widget, new_text):
+    def on_search_change(self, widget, search):
         try:
-            regex = re.compile(new_text)
-            self.matches = [m for f in self.files for m in [regex.finditer(f)] if m]
-            self.ui.search(new_text, self.matches)
+            self.searchregex = re.compile(search)
         except re.error: return
+        self.matches = [m for f in self.files for m in [self.searchregex.finditer(f)] if m]
+        self.ui.search(search, self.matches)
 
-    def on_replace_change(self, widget, new_text):
-        pass
+    def on_replace_change(self, widget, replacement):
+        try: re.compile(replacement)
+        except re.error: return
+        # TODO: Allow backreferences
+        self.replaced = [self.searchregex.sub(replacement, f) for f in self.files if self.searchregex.search(f)]
+        self.ui.replace(replacement, self.replaced)

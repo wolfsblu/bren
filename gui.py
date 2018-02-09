@@ -26,6 +26,9 @@ class GUI():
         matches = self.filepanel.search(searchtext, files)
         self.statusbar.search(matches)
 
+    def replace(self, replacement, files):
+        self.filepanel.replace(replacement, files)
+
     def show(self):
         self.loop.run()
 
