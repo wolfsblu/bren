@@ -42,9 +42,7 @@ class FilePanel():
         textboxes = []
         if len(searchtext) == 0:
             for m_iter in matches:
-                for m in m_iter:
-                    textboxes.append(urwid.Text(m.string, wrap='clip'))
-                    break
+                textboxes.append(urwid.Text(next(m_iter).string, wrap='clip'))
         else:
             for m_iter in matches:
                 parts = []
