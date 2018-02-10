@@ -10,6 +10,10 @@ class SearchPanel():
                               urwid.LineBox(self.replace)])
         return urwid.Pile([cols])
 
+    def reset(self):
+        self.search.set_edit_text('')
+        self.replace.set_edit_text('')
+
 class StatusBar():
     def __init__(self, files):
         self.file_count = len(files)
