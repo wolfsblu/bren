@@ -2,8 +2,8 @@ import urwid
 
 class SearchPanel():
     def __init__(self):
-        self.search = urwid.Edit(caption='Search: ')
-        self.replace = urwid.Edit(caption='Replace: ')
+        self.search = urwid.Edit(caption='Replace: ')
+        self.replace = urwid.Edit(caption='With: ')
 
     def get_widget(self):
         cols = urwid.Columns([urwid.LineBox(self.search),
@@ -70,30 +70,30 @@ class FilePanel():
         self.previewlist.extend(textboxes)
         return len(self.filelist)
 
-    def replace(self, replacement, replaced):
+    def replace(self, replacement, delim, replaced):
         del self.previewlist[:]
         textboxes = []
         for pair in replaced:
             parts = []
             file = pair[1]
-            s = file.find("$MATCH$")
-            e = file.find("$END$")
+            s = file.find(delim[0])
+            e = file.find(delim[1])
             ps = pe = 0
             if len(replacement) == 0:
-                parts = [file.replace('$MATCH$', '').replace('$END$', '')]
+                parts = [file.replace(delim[0], '').replace(delim[1], '')]
             else:
                 while s >= 0:
                     if s > 0:
-                        parts.append(file[pe:s].replace('$END$', ''))
-                    parts.append(('match', file[s:e].replace('$MATCH$', '')))
+                        parts.append(file[pe:s].replace(delim[1], ''))
+                    parts.append(('match', file[s:e].replace(delim[0], '')))
                     ps = s
                     pe = e
-                    s = file.find("$MATCH$", s + 1)
-                    e = file.find("$END$", e + 1)
+                    s = file.find(delim[0], s + 1)
+                    e = file.find(delim[1], e + 1)
 
             if len(parts) > 0:
                 if pe != len(file) and len(replacement) > 0:
-                    parts.append(file[pe:].replace('$END$', ''))
+                    parts.append(file[pe:].replace(delim[1], ''))
                 txt = urwid.Text(parts, wrap='clip')
                 if len(txt.get_text()) > 0:
                     textboxes.append(txt)

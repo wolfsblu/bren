@@ -1,4 +1,5 @@
 env/
+testfiles/
 __pycache__/
 
 files.txt
