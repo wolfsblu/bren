@@ -36,6 +36,7 @@ class FilePanel():
 
         return urwid.Columns([matchborder, previewborder])
 
+    # TODO: Refactor search and replace
     def search(self, searchtext, matches):
         textboxes = []
         del self.filelist[:]
@@ -69,31 +70,32 @@ class FilePanel():
         self.previewlist.extend(textboxes)
         return len(self.filelist)
 
-    def replace(self, replacement, files):
-        # TODO: Colorize replacement part
+    def replace(self, replacement, replaced):
         del self.previewlist[:]
         textboxes = []
-        for file in files:
+        for pair in replaced:
             parts = []
+            file = pair[1]
             s = file.find("$MATCH$")
             e = file.find("$END$")
             ps = pe = 0
-            while s >= 0:
-                if s > 0:
-                    parts.append(file[pe:s].replace('$MATCH$', '').replace('$END$', ''))
-                parts.append(('match', file[s:e].replace('$MATCH$', '').replace('$END$', '')))
-                ps = s
-                pe = e
-                s = file.find("$MATCH$", s + 1)
-                e = file.find("$END$", e + 1)
+            if len(replacement) == 0:
+                parts = [file.replace('$MATCH$', '').replace('$END$', '')]
+            else:
+                while s >= 0:
+                    if s > 0:
+                        parts.append(file[pe:s].replace('$END$', ''))
+                    parts.append(('match', file[s:e].replace('$MATCH$', '')))
+                    ps = s
+                    pe = e
+                    s = file.find("$MATCH$", s + 1)
+                    e = file.find("$END$", e + 1)
 
             if len(parts) > 0:
-                if pe != len(file):
-                    parts.append(file[pe:].replace('$MATCH$', '').replace('$END$', ''))
+                if pe != len(file) and len(replacement) > 0:
+                    parts.append(file[pe:].replace('$END$', ''))
                 txt = urwid.Text(parts, wrap='clip')
                 if len(txt.get_text()) > 0:
                     textboxes.append(txt)
 
         self.previewlist.extend(textboxes)
-        #self.previewlist.extend([urwid.Text(f, wrap='clip') for f in files])
-
