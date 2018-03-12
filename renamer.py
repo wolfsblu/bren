@@ -42,5 +42,5 @@ class Renamer():
                                                 , bytes(replacement, 'utf-8').decode('unicode_escape')
                                                 , self.delimiters[1])
             self.replaced = [(f, self.searchregex.sub(self.replaceregex, f)) for f in self.files if self.searchregex.search(f)]
-            self.ui.replace(replacement, ("$MATCH$", "$END$"), self.replaced)
+            self.ui.replace(replacement, self.delimiters, self.replaced)
         except (re.error, UnicodeDecodeError): return
