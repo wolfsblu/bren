@@ -59,7 +59,7 @@ class ReplaceText(Text):
             while s >= 0:
                 if s > 0:
                     parts.append(file[pe:s].replace(delim[1], ''))
-                parts.append(('match', file[s:e].replace(delim[0], '')))
+                parts.append(('match', replacement))
                 ps = s
                 pe = e
                 s = file.find(delim[0], s + 1)
@@ -67,5 +67,5 @@ class ReplaceText(Text):
 
         if len(parts) > 0:
             if pe != len(file) and len(replacement) > 0:
-                parts.append(file[pe:].replace(delim[1], ''))                
+                parts.append(file[pe:].replace(delim[1], ''))
             self.widget = urwid.Text(parts, wrap='clip')
