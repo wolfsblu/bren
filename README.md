@@ -5,6 +5,8 @@ Bren is an urwid-based **b**atch **ren**ame utility written in Python.
 ## Installation
 
 ```
+virtualenv .env
+. .env/bin/activate[.fish]
 pip install -r requirements.txt
 ```
 
@@ -21,5 +23,9 @@ ls -1 . > files.txt
 To avoid having to generate this intermediate file it's possible to use process substitution.
 
 ```
+# Bash
 ./bren.py <(ls -1 .)
+
+# Fish
+./bren.py (ls -1 | psub)
 ```
