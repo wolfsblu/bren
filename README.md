@@ -29,3 +29,7 @@ To avoid having to generate this intermediate file it's possible to use process 
 # Fish
 ./bren.py (ls -1 | psub)
 ```
+
+## Screenshot
+
+![Screenshot](https://github.com/helmi77/bren/blob/master/screenshots/bren.png "Screenshot")
